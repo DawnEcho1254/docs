@@ -18,18 +18,20 @@ jobs:
             deployments: write
         steps:
             - name: Install nix
-              uses: cachix/install-nix-action@v31
+              uses: cachix/install-nix-action@13d8dd58da0234aa297dedd986986ccb8e7f3e24 # v31
 
             - name: Checkout
-              uses: actions/checkout@v6
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
             - name: Build site
               run: |
-                  nix build .#chenjia-docs --print-out-paths
+                  nix build .#chenjia-docs --print-out-paths | tee store_path
+                  echo "store_path=$(<store_path)" >> "$GITHUB_ENV"
+                  find . -mindepth 1 -delete
 
             - name: Publish to Cloudflare Pages
-              uses: cloudflare/wrangler-action@v4
+              uses: cloudflare/wrangler-action@953926a2e2182532811c01a25e53647d93bf07c0 # v4
               with:
                   apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
                   accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-                  command: pages deploy result/ --project-name=chenjia-docs
+                  command: pages deploy ${{ env.store_path }} --project-name=chenjia-docs
