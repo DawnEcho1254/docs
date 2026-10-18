@@ -132,6 +132,15 @@ const docs = defineCollection({
             '06计划中建筑',
             '07附属创造服',
             '08封禁案例',
+            {
+              text: '图书馆',
+              collapsed: false,
+              prefix: '图书馆',
+              items: [
+                '伟大的创世神-⌈尘甲⌋',
+                '世界秩序的维护者-⌈林然⌋',
+              ]
+            },
           ]
         }  
       ]
